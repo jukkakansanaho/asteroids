@@ -9,11 +9,16 @@ def main():
     clock = pg.time.Clock()
     dt = 0
 
+    # Create two groups and add Player to them
+    updatable = pg.sprite.Group()
+    drawable = pg.sprite.Group()
+    Player.containers = (updatable, drawable)
+
     # Player - spwan in the middle of the screen
     # x = SCREEN_WIDTH / 2
     # y = SCREEN_HEIGHT / 2
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
-
+    
     running = True
     while running:
         for event in pg.event.get():
@@ -21,8 +26,13 @@ def main():
                 return
                 
         screen.fill(color)  # fill screen bg
-        player.draw(screen) # draw player
-        player.update(dt)
+        # Draw items in drawable group
+        for item in drawable:
+            item.draw(screen) # draw player
+        # Update items in updatable group
+        for item in updatable:
+            item.update(dt)
+        
         pg.display.flip()   # refresh screen
         
         # limits FPS to 60
