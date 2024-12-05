@@ -1,6 +1,6 @@
 import pygame as pg
-import sys
 from constants import *
+from player import Player
 
 def main():
     pg.init()
@@ -9,14 +9,20 @@ def main():
     clock = pg.time.Clock()
     dt = 0
 
+    # Player - spwan in the middle of the screen
+    # x = SCREEN_WIDTH / 2
+    # y = SCREEN_HEIGHT / 2
+    player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+
     running = True
     while running:
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 return
                 
-        screen.fill(color)
-        pg.display.flip()
+        screen.fill(color)  # fill screen bg
+        player.draw(screen) # draw player
+        pg.display.flip()   # refresh screen
         
         # limits FPS to 60
         # dt is delta time in seconds since last frame, used for framerate-
