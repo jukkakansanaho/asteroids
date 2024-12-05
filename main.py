@@ -22,6 +22,7 @@ def main():
                 
         screen.fill(color)  # fill screen bg
         player.draw(screen) # draw player
+        player.update(dt)
         pg.display.flip()   # refresh screen
         
         # limits FPS to 60
