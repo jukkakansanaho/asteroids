@@ -30,7 +30,8 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
-                
+
+        # Update all objects        
         screen.fill(color)  # fill screen bg
         # Draw items in drawable group
         for item in drawable:
@@ -42,6 +43,11 @@ def main():
         for item in asteroids:
             item.update(dt)
         
+        # Check Asteroid-Player collisions
+        for item in asteroids:
+            if item.is_colliding(player):
+                print(f"Game Over!")
+                return
         pygame.display.flip()   # refresh screen
         
         # limits FPS to 60
