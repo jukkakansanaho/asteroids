@@ -48,6 +48,9 @@ def main():
         for item in shots:
             item.update(dt)
         
+        # Player shooting cooldown
+        player.shoot_timer -= dt
+
         # Check Asteroid-Player collisions
         for item in asteroids:
             if item.is_colliding(player):
