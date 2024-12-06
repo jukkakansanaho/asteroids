@@ -34,8 +34,13 @@ def main():
             if event.type == pygame.QUIT:
                 return
 
-        # Update all objects        
         screen.fill(color)  # fill screen bg
+        # Update all objects
+        # Check if shots hits asteroid             
+        for asteroid in asteroids:
+            for bullet in shots:
+                if bullet.is_colliding(asteroid):
+                    asteroid.kill()    
         # Draw items in drawable group
         for item in drawable:
             item.draw(screen) # draw player
