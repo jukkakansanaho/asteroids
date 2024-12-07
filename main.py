@@ -1,3 +1,4 @@
+import sys
 import pygame
 from constants import *
 from player import Player
@@ -12,21 +13,20 @@ def main():
     clock = pygame.time.Clock()
     dt = 0
 
-    # Create two groups and add Player to them
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
     asteroids = pygame.sprite.Group()
     shots = pygame.sprite.Group()
-    Player.containers = (updatable, drawable)
+
     Asteroid.containers = (asteroids, updatable, drawable)
     AsteroidField.containers = (updatable)
+    asteroidfield = AsteroidField()
     Shot.containers = (shots, updatable, drawable)
 
+    Player.containers = (updatable, drawable)
     # Player - spwan in the middle of the screen
-    # x = SCREEN_WIDTH / 2
-    # y = SCREEN_HEIGHT / 2
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
-    asteroidfield = AsteroidField()
+    
     
     running = True
     while running:
@@ -34,33 +34,28 @@ def main():
             if event.type == pygame.QUIT:
                 return
 
-        screen.fill(color)  # fill screen bg
-        # Update all objects
-        # Check if shots hits asteroid             
-        for asteroid in asteroids:
-            for bullet in shots:
-                if bullet.is_colliding(asteroid):
-                    asteroid.kill()    
-        # Draw items in drawable group
-        for item in drawable:
-            item.draw(screen) # draw player
         # Update items in updatable group
         for item in updatable:
             item.update(dt)
-        # Update items in asteroids group
-        for item in asteroids:
-            item.update(dt)
-        for item in shots:
-            item.update(dt)
+
+        # Check if shots hits asteroid             
+        for asteroid in asteroids:
+            if asteroid.is_colliding(player):
+                print(f"Game Over!")
+                sys.exit()
+            
+            for shot in shots:
+                if asteroid.is_colliding(shot):
+                    shot.kill()
+                    asteroid.split()
         
         # Player shooting cooldown
         player.shoot_timer -= dt
 
-        # Check Asteroid-Player collisions
-        for item in asteroids:
-            if item.is_colliding(player):
-                print(f"Game Over!")
-                return
+        screen.fill(color)  # fill screen bg
+        # Draw items in drawable group
+        for item in drawable:
+            item.draw(screen)
         pygame.display.flip()   # refresh screen
         
         # limits FPS to 60
